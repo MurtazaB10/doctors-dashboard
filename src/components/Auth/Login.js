@@ -21,7 +21,7 @@ function Login() {
       email,
       password,
     };
-    const res = await axios.post("/admin/visa-login", loginUserData);
+    const res = await axios.post("/doctor/login", loginUserData);
     if (res.data.success) {
       setEmail(localStorage.setItem("user", email));
       localStorage.setItem("token", res.data.data);

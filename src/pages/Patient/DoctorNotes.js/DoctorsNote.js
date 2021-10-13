@@ -83,13 +83,13 @@ function DoctorsNotes({ id }) {
                                   <p className="mb-3">{note.note}</p>
                                 </div>
                                 <p className="notes-edit">
-                                  {/* <a onClick={editNote}>
+                                  <a onClick={editNote}>
                                     Edit <i className="mdi mdi-pencil" />
                                   </a>{" "}
                                   |{" "}
                                   <a onClick={deleteNote}>
                                     Delete <i className="mdi mdi-delete" />
-                                  </a>{" "} */}
+                                  </a>{" "}
                                   &nbsp;{" "}
                                   <span>
                                     Noted By{" "}

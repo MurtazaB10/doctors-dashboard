@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Snackbar from "../../../components/Alert/SnackBar";
 import AddEmergency from "./AddEmergency";
+import axios from "axios";
 
 function Emergency({ id }) {
   const [confirmationSnackbarMessage, setConfirmationSnackbarMessage] =
@@ -8,6 +9,20 @@ function Emergency({ id }) {
   const [confirmationSnackbarOpen, setConfirmationSnackbarOpen] =
     useState(false);
   const [trigger, setTrigger] = useState(false);
+  const [emer, setEmer] = useState();
+
+  const fetch = async () => {
+    try {
+      const res = await axios.post(`/nurse/patientEmerContact/${id}`);
+      setEmer(res.data.data.patient_emer_contact);
+    } catch (error) {
+      console.error("error",error);
+    } 
+  }
+
+  useEffect(() => {
+    fetch();
+  }, [trigger, id])
 
   return (
     <div
@@ -50,34 +65,17 @@ function Emergency({ id }) {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>xyz</td>
-                      <td>abc@gmail.com</td>
-                      <td>07564 56784</td>
-                      <td>+919586743645</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>xyz</td>
-                      <td>abc@gmail.com</td>
-                      <td>07564 56784</td>
-                      <td>+919586743645</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>xyz</td>
-                      <td>abc@gmail.com</td>
-                      <td>07564 56784</td>
-                      <td>+919586743645</td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td>xyz</td>
-                      <td>abc@gmail.com</td>
-                      <td>07564 56784</td>
-                      <td>+919586743645</td>
-                    </tr>
+                    {emer && emer.map((elem,idx) => {
+                      return (
+                        <tr key={elem._id}>
+                        <td>{idx+1}</td>
+                        <td>{elem.name}</td>
+                        <td>{elem.email}</td>
+                        <td>{elem.tel_no}</td>
+                        <td>{elem.mobile}</td>
+                      </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

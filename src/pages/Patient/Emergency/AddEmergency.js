@@ -18,10 +18,13 @@ function AddEmergency(props) {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
+    data = { ...data, patient_id: id };
     await axios
-      .post("/nurse/addPatientDocument", data)
+      .post("/nurse/addPatientEmerContact", data)
       .then((response) => {
-        setConfirmationSnackbarMessage("Patient Document succesfully added!");
+        setConfirmationSnackbarMessage(
+          "Patient Emergency Contact succesfully added!"
+        );
         setConfirmationSnackbarOpen(true);
         setTrigger(!trigger);
       })
@@ -55,11 +58,7 @@ function AddEmergency(props) {
             </button>
           </div>
           <div className="modal-body">
-            <form
-              className="forms-sample"
-              onSubmit={handleSubmit(onSubmit)}
-              encType="multipart/form-data"
-            >
+            <form className="forms-sample" onSubmit={handleSubmit(onSubmit)}>
               <p className="formErrors">{errors.name?.message}</p>
               <div className="form-group">
                 <label htmlFor="exampleInputName1">
@@ -80,23 +79,23 @@ function AddEmergency(props) {
                 />
               </div>
 
-              <p className="formErrors">{errors.emailaddress?.message}</p>
+              <p className="formErrors">{errors.email?.message}</p>
               <div className="form-group">
                 <label htmlFor="exampleTextarea1">
                   Email Address<sup>*</sup>
                 </label>
                 <input
                   type="email"
-                  name="emailaddress"
+                  name="email"
                   className="form-control"
                   placeholder="Email Address"
-                  {...register("emailaddress", {
+                  {...register("email", {
                     required: "* Email Address is required",
                   })}
                 />
               </div>
 
-              <p className="formErrors">{errors.telephonenumber?.message}</p>
+              <p className="formErrors">{errors.tel_no?.message}</p>
 
               <div className="form-group">
                 <label htmlFor="exampleInputName1">
@@ -104,15 +103,15 @@ function AddEmergency(props) {
                 </label>
                 <input
                   type="text"
-                  name="telephonenumber"
+                  name="tel_no"
                   className="form-control"
                   placeholder="Telephone Number"
-                  {...register("telephonenumber", {
-                    required: "Telephone Number is required",
+                  {...register("tel_no", {
+                    required: "* Telephone Number is required",
                   })}
                 />
               </div>
-              <p className="formErrors">{errors.mobilenumber?.message}</p>
+              <p className="formErrors">{errors.mobile?.message}</p>
 
               <div className="form-group">
                 <label htmlFor="exampleInputName1">
@@ -120,11 +119,27 @@ function AddEmergency(props) {
                 </label>
                 <input
                   type="text"
-                  name="mobilenumber"
+                  name="mobile"
                   className="form-control"
                   placeholder="Mobile Number"
-                  {...register("mobilenumber", {
-                    required: "Mobile Number is required",
+                  {...register("mobile", {
+                    required: "* Mobile Number is required",
+                  })}
+                />
+              </div>
+              <p className="formErrors">{errors.relationship?.message}</p>
+
+              <div className="form-group">
+                <label htmlFor="exampleInputName1">
+                  Relationship<sup>*</sup>
+                </label>
+                <input
+                  type="text"
+                  name="relationship"
+                  className="form-control"
+                  placeholder="Relationship"
+                  {...register("relationship", {
+                    required: "* Relationship is required",
                   })}
                 />
               </div>

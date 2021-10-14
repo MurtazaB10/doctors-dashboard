@@ -4,6 +4,8 @@ import AddDoctorNoteModal from "./AddDoctorNoteModal";
 import timeDifference from "../../../utils/timeDifference";
 import Snackbar from "../../../components/Alert/SnackBar";
 import { useSelector } from "react-redux";
+import EditDoctorNote from "./EditDoctorNote";
+import Note from "./Note";
 function DoctorsNotes({ id }) {
   const [loading, setLoading] = useState(false);
   const [trigger, setTrigger] = useState(false);
@@ -13,6 +15,11 @@ function DoctorsNotes({ id }) {
     useState("");
   const [confirmationSnackbarOpen, setConfirmationSnackbarOpen] =
     useState(false);
+  const [note, setNote] = useState();
+
+  const setnote = (not) => {
+    setNote(not);
+  };
   async function fetchData() {
     setLoading(false);
     try {
@@ -32,10 +39,6 @@ function DoctorsNotes({ id }) {
     });
     return doctor_name;
   }
-
-  function editNote() {}
-
-  function deleteNote() {}
 
   useEffect(() => {
     fetchData();
@@ -62,83 +65,37 @@ function DoctorsNotes({ id }) {
 
                     {docNotes &&
                       docNotes.map((note, idx) => {
-                        const doc = getDocName(note.doctor_id);
+                        
                         return idx % 2 == 0 ? (
-                          <ul className="timeline mt-2">
-                            <li>
-                              <div className="timeline-badge info">
-                                <i className="mdi mdi-check" />
-                              </div>
-                              <div className="timeline-panel">
-                                <p className="time-box">
-                                  <small className="text-muted">
-                                    <i className="mdi mdi-av-timer" />{" "}
-                                    {timeDifference(
-                                      new Date(),
-                                      new Date(note.date)
-                                    )}
-                                  </small>
-                                </p>
-                                <div className="timeline-body">
-                                  <p className="mb-3">{note.note}</p>
-                                </div>
-                                <p className="notes-edit">
-                                  <a onClick={editNote}>
-                                    Edit <i className="mdi mdi-pencil" />
-                                  </a>{" "}
-                                  |{" "}
-                                  <a onClick={deleteNote}>
-                                    Delete <i className="mdi mdi-delete" />
-                                  </a>{" "}
-                                  &nbsp;{" "}
-                                  <span>
-                                    Noted By{" "}
-                                    <i className="mdi mdi-file-document-box" />:
-                                    Dr.
-                                    {doc.length !== 0 && doc[0].name}
-                                  </span>
-                                </p>
-                              </div>
-                            </li>
-                          </ul>
+                          <Note
+                            key={idx}
+                            note={note}
+                            clas=""
+                            Edit={setnote}
+                            setTrigger={setTrigger}
+                            setConfirmationSnackbarMessage={
+                              setConfirmationSnackbarMessage
+                            }
+                            setConfirmationSnackbarOpen={
+                              setConfirmationSnackbarOpen
+                            }
+                            trigger={trigger}
+                          />
                         ) : (
-                          <ul className="timeline mt-0">
-                            <li className="timeline-inverted">
-                              <div className="timeline-badge info">
-                                <i className="mdi mdi-check" />
-                              </div>
-                              <div className="timeline-panel">
-                                <p className="time-box">
-                                  <small className="text-muted">
-                                    <i className="mdi mdi-av-timer" />{" "}
-                                    {timeDifference(
-                                      new Date(),
-                                      new Date(note.date)
-                                    )}
-                                  </small>
-                                </p>
-                                <div className="timeline-body">
-                                  <p className="mb-3">{note.note}</p>
-                                </div>
-                                <p className="notes-edit">
-                                  {/* <a href>
-                                    Edit <i className="mdi mdi-pencil" />
-                                  </a>{" "}
-                                  |{" "}
-                                  <a href>
-                                    Delete <i className="mdi mdi-delete" />
-                                  </a>{" "} */}
-                                  &nbsp;{" "}
-                                  <span>
-                                    Noted By{" "}
-                                    <i className="mdi mdi-file-document-box" />:
-                                    Dr
-                                    {doc.length !== 0 && doc[0].name}
-                                  </span>
-                                </p>
-                              </div>
-                            </li>
-                          </ul>
+                          <Note
+                            key={idx}
+                            note={note}
+                            clas="timeline-inverted"
+                            Edit={setnote}
+                            setTrigger={setTrigger}
+                            setConfirmationSnackbarMessage={
+                              setConfirmationSnackbarMessage
+                            }
+                            setConfirmationSnackbarOpen={
+                              setConfirmationSnackbarOpen
+                            }
+                            trigger={trigger}
+                          />
                         );
                       })}
                   </div>
@@ -155,7 +112,14 @@ function DoctorsNotes({ id }) {
         setConfirmationSnackbarMessage={setConfirmationSnackbarMessage}
         setConfirmationSnackbarOpen={setConfirmationSnackbarOpen}
       />
-
+      <EditDoctorNote
+        id={id}
+        doctorNotes={note}
+        setTrigger={setTrigger}
+        trigger={trigger}
+        setConfirmationSnackbarMessage={setConfirmationSnackbarMessage}
+        setConfirmationSnackbarOpen={setConfirmationSnackbarOpen}
+      />
       <Snackbar
         confirmationSnackbarMessage={confirmationSnackbarMessage}
         confirmationSnackbarOpen={confirmationSnackbarOpen}
